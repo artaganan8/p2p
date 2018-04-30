@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.BidRequestAuditHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.BidRequestAuditHistory" >
+    <id column="id" property="id"  />
+	<result column="auditType" property="auditType"  />
+	<result column="remark" property="remark"  />
+	<result column="state" property="state"  />
+	<result column="applyTime" property="applyTime"  />
+	<result column="audiTime" property="audiTime"  />
+	<result column="bidRequest_id" property="bidRequestId"  />
+      <!--关联登录信息表logininfo-->
+      <association property="applier" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="ap_">
+          <id property="id" column="id"/>
+          <result property="username" column="username"/>
+      </association>
+      <association property="auditor" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="au_">
+          <id property="id" column="id"/>
+          <result property="username" column="username"/>
+      </association>
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.BidRequestAuditHistory" useGeneratedKeys="true" keyProperty="id" >
+    insert into bidRequestAuditHistory 
+    (auditType,auditor_id,remark,state,applyTime,audiTime,bidRequest_id,applier_id)
+    values 
+    (#{auditType},#{auditor.id},#{remark},#{state},#{applyTime},#{audiTime},#{bidRequestId},#{applier.id})
+  </insert>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select <include refid="base_column"/> from <include refid="base_from"/> where brah.id = #{id}
+  </select>
+    <sql id="base_column">
+        brah.auditType,brah.remark,brah.state,brah.applyTime,brah.audiTime,brah.bidRequest_id,
+        ap.id ap_id,ap.username ap_username,au.id au_id,au.username au_username
+    </sql>
+    <sql id="base_from">
+        bidRequestAuditHistory brah
+    LEFT JOIN logininfo ap ON (brah.applier_id = ap.id)
+    LEFT JOIN logininfo au ON (brah.auditor_id = au.id)
+    </sql>
+  <sql id="conditionSql">
+  	<where>
+  	</where>
+  </sql>
+  <select id="queryPageCount" resultType="long">
+  	select count(0) from bidRequestAuditHistory brah
+  	<include refid="conditionSql"/>
+  </select>
+  <select id="queryPageData" resultMap="BaseResultMap">
+  	select <include refid="base_column"/> from <include refid="base_from"/>
+  	<include refid="conditionSql"/>
+  	limit #{start},#{pageSize}
+  </select>
+    <select id="queryListByBidRequestId" resultMap="BaseResultMap">
+        select <include refid="base_column"/> from <include refid="base_from"/> where brah.bidRequest_id = #{bidRequestId}
+    </select>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.ExpAccountFlowMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.ExpAccountFlow" >
+    <id column="id" property="id"  />
+	<result column="amount" property="amount"  />
+	<result column="usableAmount" property="usableAmount"  />
+	<result column="actionType" property="actionType"  />
+	<result column="freezedAmount" property="freezedAmount"  />
+	<result column="actionTime" property="actionTime"  />
+	<result column="note" property="note"  />
+	<result column="expAccountId" property="expAccountId"  />
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.ExpAccountFlow" useGeneratedKeys="true" keyProperty="id" >
+    insert into expAccountFlow 
+    (amount,usableAmount,actionType,freezedAmount,actionTime,note,expAccountId)
+    values 
+    (#{amount},#{usableAmount},#{actionType},#{freezedAmount},#{actionTime},#{note},#{expAccountId})
+  </insert>
+
+</mapper>

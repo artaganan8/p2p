@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.SystemAccountFlowMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.SystemAccountFlow" >
+    <id column="id" property="id"  />
+	<result column="amount" property="amount"  />
+	<result column="actionType" property="actionType"  />
+	<result column="freezedAmount" property="freezedAmount"  />
+	<result column="remark" property="remark"  />
+	<result column="usableAmount" property="usableAmount"  />
+	<result column="actionTime" property="actionTime"  />
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.SystemAccountFlow" useGeneratedKeys="true" keyProperty="id" >
+    insert into systemAccountFlow 
+    (amount,actionType,freezedAmount,remark,usableAmount,actionTime)
+    values 
+    (#{amount},#{actionType},#{freezedAmount},#{remark},#{usableAmount},#{actionTime})
+  </insert>
+</mapper>

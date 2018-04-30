@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.RechargeOffLineMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.RechargeOffLine" >
+    <id column="id" property="id"  />
+	<result column="amount" property="amount"  />
+	<result column="remark" property="remark"  />
+	<result column="tradeTime" property="tradeTime"  />
+	<result column="state" property="state"  />
+	<result column="applyTime" property="applyTime"  />
+	<result column="audiTime" property="audiTime"  />
+	<result column="note" property="note"  />
+	<result column="tradeCode" property="tradeCode"  />
+
+	  <!--关联关系-->
+	  <association property="applier" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="ap_">
+		  <id column="id" property="id" />
+		  <result column="username" property="username"/>
+	  </association>
+	  <association property="auditor" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="au_">
+		  <id column="id" property="id" />
+		  <result column="username" property="username"/>
+	  </association>
+	  <association property="bankInfo" javaType="com.xmg.p2p.business.domain.PlatFormBankInfo" columnPrefix="bk_">
+		  <id column="id" property="id" />
+		  <result column="bankName" property="bankName"/>
+		  <result column="accountNumber" property="accountNumber"/>
+		  <result column="bankForkName" property="bankForkName"/>
+		  <result column="accountName" property="accountName"/>
+	  </association>
+
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.RechargeOffLine" useGeneratedKeys="true" keyProperty="id" >
+    insert into rechargeOffLine 
+    (amount,bankInfo_id,auditor_id,remark,tradeTime,state,applyTime,audiTime,note,applier_id,tradeCode)
+    values 
+    (#{amount},#{bankInfo.id},#{auditor.id},#{remark},#{tradeTime},#{state},#{applyTime},#{audiTime},#{note},#{applier.id},#{tradeCode})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.business.domain.RechargeOffLine" >
+    update rechargeOffLine
+    set
+	    amount=#{amount},
+	    bankInfo_id=#{bankInfo.id},
+	    auditor_id=#{auditor.id},
+	    remark=#{remark},
+	    tradeTime=#{tradeTime},
+	    state=#{state},
+	    applyTime=#{applyTime},
+	    audiTime=#{audiTime},
+	    note=#{note},
+	    applier_id=#{applier.id},
+	    tradeCode=#{tradeCode}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select <include refid="base_column"/> from <include refid="base_from"/> where rol.id = #{id}
+  </select>
+	<sql id="base_column">
+		rol.id,rol.amount,rol.remark,rol.tradeTime,rol.state,rol.applyTime,rol.audiTime,rol.note,rol.tradeCode,
+		ap.id ap_id,ap.username ap_username,au.id au_id,au.username au_username,
+		bk.id bk_id,bk.bankForkName bk_bankForkName,bk.bankName bk_bankName,bk.accountName bk_accountName,
+		bk.accountNumber bk_accountNumber
+	</sql>
+	<sql id="base_from">
+		rechargeOffLine rol
+		LEFT JOIN logininfo ap ON (rol.applier_id = ap.id)
+		LEFT JOIN logininfo au ON (rol.auditor_id = au.id)
+		LEFT JOIN platFormBankInfo bk ON (rol.bankinfo_id = bk.id)
+	</sql>
+  <sql id="conditionSql">
+  	<where>
+  	</where>
+  </sql>
+  <select id="queryPageCount" resultType="long">
+  	select count(0) from rechargeOffLine rol
+  	<include refid="conditionSql"/>
+  </select>
+  <select id="queryPageData" resultMap="BaseResultMap">
+  	select <include refid="base_column"/> from <include refid="base_from"/>
+  	<include refid="conditionSql"/>
+  	limit #{start},#{pageSize}
+  </select>
+</mapper>

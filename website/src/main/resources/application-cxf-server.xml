@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+	<!-- 引入cxf相关的配置文件 -->
+	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+	<!-- 创建服务类 -->
+	<bean id="CalculatorImpl" class="com.xmg.p2p.service.impl.CalculatorImpl"/>
+	<!-- 
+		发布服务 
+		serviceClass:服务接口全限定名
+		serviceBean:服务类对象,通过#号在spring容器找到对应id的对象
+		address:发布地址.
+	-->
+	<jaxws:server 
+		serviceClass="com.xmg.p2p.service.Calculator"
+		serviceBean="#CalculatorImpl"
+		address="/calculator">
+	</jaxws:server>
+</beans>

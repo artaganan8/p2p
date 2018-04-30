@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.base.mapper.UserFileMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.base.domain.UserFile" >
+    <id column="id" property="id"  />
+	<result column="remark" property="remark"  />
+	<result column="score" property="score"  />
+	<result column="state" property="state"  />
+	<result column="applyTime" property="applyTime"  />
+	<result column="audiTime" property="audiTime"  />
+	<result column="image" property="image"  />
+	<!--关联关系-->
+	  <association property="applier" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="ap_">
+		  <id column="id" property="id"/>
+		  <result column="username" property="username"/>
+	  </association>
+	  <association property="auditor" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="au_">
+		  <id column="id" property="id"/>
+		  <result column="username" property="username"/>
+	  </association>
+	  <association property="fileType" javaType="com.xmg.p2p.base.domain.SystemDictionaryItem" column="fileType_id"
+				   select="com.xmg.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.base.domain.UserFile" useGeneratedKeys="true" keyProperty="id" >
+    insert into userFile 
+    (fileType_id,auditor_id,remark,score,state,applyTime,audiTime,image,applier_id)
+    values 
+    (#{fileType.id},#{auditor.id},#{remark},#{score},#{state},#{applyTime},#{audiTime},#{image},#{applier.id})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.base.domain.UserFile" >
+    update userFile
+    set
+	    fileType_id=#{fileType.id},
+	    auditor_id=#{auditor.id},
+	    remark=#{remark},
+	    score=#{score},
+	    state=#{state},
+	    applyTime=#{applyTime},
+	    audiTime=#{audiTime},
+	    image=#{image},
+	    applier_id=#{applier.id}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select <include refid="base_column"/> from <include refid="base_from"/> where uf.id = #{id}
+  </select>
+  <sql id="conditionSql">
+  	<where>
+			uf.applier_id is not NULL
+		<if test="state>-1">
+			AND uf.state = #{state}
+		</if>
+		<if test="beginDate!=null">
+			AND uf.applyTime &gt;= #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND uf.applyTime &lt;= #{endDate}
+		</if>
+  	</where>
+  </sql>
+	<sql id="base_column">
+		uf.id,uf.fileType_id,uf.remark,uf.score,uf.state,uf.applyTime,uf.audiTime,uf.image
+	,ap.id ap_id,ap.username ap_username,au.id au_id,au.username au_username
+	</sql>
+	<sql id="base_from">
+		userFile uf
+		LEFT JOIN logininfo ap ON (uf.applier_id = ap.id)
+		LEFT JOIN logininfo au ON (uf.auditor_id = au.id)
+	</sql>
+
+  <select id="queryPageCount" resultType="long">
+  	select count(0) from userFile uf
+  	<include refid="conditionSql"/>
+  </select>
+  <select id="queryPageData" resultMap="BaseResultMap">
+  	select <include refid="base_column"/> from <include refid="base_from"/>
+  	<include refid="conditionSql"/>
+  	limit #{start},#{pageSize}
+  </select>
+	<select id="queryFileTypeList" resultMap="BaseResultMap" >
+		select <include refid="base_column"/> from <include refid="base_from"/>
+		where uf.applier_id=#{id}
+		<if test="b">
+			AND uf.filetype_id is not NULL
+		</if>
+		<if test="!b">
+			AND uf.filetype_id is NULL
+		</if>
+	</select>
+	<select id="querByUserinfoId" resultMap="BaseResultMap">
+		select <include refid="base_column"/> from <include refid="base_from"/>
+		WHERE uf.applier_id = #{userinfoId} And uf.state = #{statePass}
+	</select>
+</mapper>

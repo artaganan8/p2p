@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.base.mapper.VedioAuthMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.base.domain.VedioAuth" >
+    <id column="id" property="id"  />
+	<result column="state" property="state"  />
+	<result column="applyTime" property="applyTime"  />
+	<result column="audiTime" property="audiTime"  />
+	<result column="remark" property="remark"  />
+      <!--关联登录信息表logininfo-->
+      <association property="applier" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="ap_">
+          <id property="id" column="id"/>
+          <result property="username" column="username"/>
+      </association>
+      <association property="auditor" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="au_">
+          <id property="id" column="id"/>
+          <result property="username" column="username"/>
+      </association>
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.base.domain.VedioAuth" useGeneratedKeys="true" keyProperty="id" >
+    insert into vedioAuth 
+    (state,applyTime,audiTime,auditor_id,remark,applier_id)
+    values 
+    (#{state},#{applyTime},#{audiTime},#{auditor.id},#{remark},#{applier.id})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.base.domain.VedioAuth" >
+    update vedioAuth
+    set
+	    state=#{state},
+	    applyTime=#{applyTime},
+	    audiTime=#{audiTime},
+	    auditor_id=#{auditor.id},
+	    remark=#{remark},
+	    applier_id=#{applier.id}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select * from vedioAuth where id = #{id}
+  </select>
+    <sql id="baseColumn">
+        va.id,va.state, va.applyTime, va.audiTime, va.auditor_id, va.remark, va.applier_id
+        ,ap.id ap_id,ap.username ap_username,au.id au_id,au.username au_username
+    </sql>
+
+    <sql id="baseFrom">
+        vedioAuth va
+        LEFT JOIN logininfo ap ON (va.applier_id = ap.id)
+        LEFT JOIN logininfo au ON (va.auditor_id = au.id)
+    </sql>
+  <sql id="conditionSql">
+  	<where>
+        <if test="state>-1">
+            AND va.state = #{state}
+        </if>
+        <if test="beginDate!=null">
+            AND va.applyTime &gt;= #{beginDate}
+        </if>
+        <if test="endDate!=null">
+            AND va.applyTime &lt;= #{endDate}
+        </if>
+  	</where>
+  </sql>
+  <select id="queryPageCount" resultType="long">
+  	select count(0) from vedioAuth va
+  	<include refid="conditionSql"/>
+  </select>
+  <select id="queryPageData" resultMap="BaseResultMap">
+  	select <include refid="baseColumn"/>  from <include refid="baseFrom"/>
+  	<include refid="conditionSql"/>
+  	limit #{start},#{pageSize}
+  </select>
+</mapper>

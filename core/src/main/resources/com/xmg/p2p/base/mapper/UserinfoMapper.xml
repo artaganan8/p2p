@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.base.mapper.UserinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.base.domain.Userinfo" >
+    <id column="id" property="id"  />
+	<result column="phoneNumber" property="phoneNumber"  />
+	<result column="email" property="email"  />
+	<result column="score" property="score"  />
+	<result column="realAuth_id" property="realAuthId"  />
+	<result column="bitState" property="bitState"  />
+	<result column="realName" property="realName"  />
+	<result column="idNumber" property="idNumber"  />
+	<result column="version" property="version"  />
+	<!--使用额外sql查询-->
+	  <association property="incomeGrade" column="incomeGrade_id"
+				   javaType="com.xmg.p2p.base.domain.SystemDictionaryItem"
+				   select="com.xmg.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"></association>
+	  <association property="marriage" column="marriage_id"
+				   javaType="com.xmg.p2p.base.domain.SystemDictionaryItem"
+				   select="com.xmg.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"></association>
+	  <association property="kidCount" column="kidCount_id"
+				   javaType="com.xmg.p2p.base.domain.SystemDictionaryItem"
+				   select="com.xmg.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"></association>
+	  <association property="educationBackground" column="educationBackground_id"
+				   javaType="com.xmg.p2p.base.domain.SystemDictionaryItem"
+				   select="com.xmg.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"></association>
+	  <association property="houseCondition" column="houseCondition_id"
+				   javaType="com.xmg.p2p.base.domain.SystemDictionaryItem"
+				   select="com.xmg.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.base.domain.Userinfo" >
+    insert into userinfo 
+    (id,incomeGrade_id,phoneNumber,email,bitState,realName,marriage_id,houseCondition_id,educationBackground_id,idNumber,kidCount_id,version,score,realAuth_id)
+    values 
+    (#{id},#{incomeGrade.id},#{phoneNumber},#{email},#{bitState},#{realName},#{marriage.id},#{houseCondition.id},#{educationBackground.id},#{idNumber},#{kidCount.id},0,#{score},#{realAuthId})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.base.domain.Userinfo" >
+    update userinfo
+    set
+	    incomeGrade_id=#{incomeGrade.id},
+	    phoneNumber=#{phoneNumber},
+	    email=#{email},
+	    score=#{score},
+	    realAuth_id=#{realAuthId},
+	    bitState=#{bitState},
+	    realName=#{realName},
+	    marriage_id=#{marriage.id},
+	    houseCondition_id=#{houseCondition.id},
+	    educationBackground_id=#{educationBackground.id},
+	    idNumber=#{idNumber},
+	    kidCount_id=#{kidCount.id},
+	    version=version+1
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select * from userinfo where id = #{id}
+  </select>
+
+</mapper>

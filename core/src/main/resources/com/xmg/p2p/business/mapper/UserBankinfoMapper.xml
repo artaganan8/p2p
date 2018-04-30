@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.UserBankinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.UserBankinfo" >
+    <id column="id" property="id"  />
+	<result column="bankName" property="bankName"  />
+	<result column="accountName" property="accountName"  />
+	<result column="forkName" property="bankForkName"  />
+	<result column="userinfo_id" property="userinfoId"  />
+	<result column="bankNumber" property="accountNumber"  />
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.UserBankinfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into userBankinfo 
+    (bankName,accountName,forkName,userinfo_id,bankNumber)
+    values 
+    (#{bankName},#{accountName},#{bankForkName},#{userinfoId},#{accountNumber})
+  </insert>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select * from userBankinfo where id = #{id}
+  </select>
+    <select id="selectByUserinfoId" resultMap="BaseResultMap" >
+        select * from userBankinfo where userinfo_id = #{userinfoId}
+    </select>
+</mapper>

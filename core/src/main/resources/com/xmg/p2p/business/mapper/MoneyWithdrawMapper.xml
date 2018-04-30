@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.MoneyWithdrawMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.MoneyWithdraw" >
+    <id column="id" property="id"  />
+	<result column="amount" property="amount"  />
+	<result column="accountName" property="accountName"  />
+	<result column="accountNumber" property="accountNumber"  />
+	<result column="charge" property="charge"  />
+	<result column="remark" property="remark"  />
+	<result column="state" property="state"  />
+	<result column="applyTime" property="applyTime"  />
+	<result column="audiTime" property="audiTime"  />
+	<result column="bankForkName" property="bankForkName"  />
+	<result column="bankName" property="bankName"  />
+	  <!--关联登录信息表logininfo-->
+	  <association property="applier" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="ap_">
+		  <id property="id" column="id"/>
+		  <result property="username" column="username"/>
+	  </association>
+	  <association property="auditor" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="au_">
+		  <id property="id" column="id"/>
+		  <result property="username" column="username"/>
+	  </association>
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.MoneyWithdraw" useGeneratedKeys="true" keyProperty="id" >
+    insert into moneyWithdraw 
+    (amount,accountName,accountNumber,auditor_id,charge,remark,state,applyTime,audiTime,bankForkName,bankName,applier_id)
+    values 
+    (#{amount},#{accountName},#{accountNumber},#{auditor.id},#{charge},#{remark},#{state},#{applyTime},#{audiTime},#{bankForkName},#{bankName},#{applier.id})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.business.domain.MoneyWithdraw" >
+    update moneyWithdraw
+    set
+	    amount=#{amount},
+	    accountName=#{accountName},
+	    accountNumber=#{accountNumber},
+	    auditor_id=#{auditor.id},
+	    charge=#{charge},
+	    remark=#{remark},
+	    state=#{state},
+	    applyTime=#{applyTime},
+	    audiTime=#{audiTime},
+	    bankForkName=#{bankForkName},
+	    bankName=#{bankName},
+	    applier_id=#{applier.id}
+    where id = #{id}
+  </update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+		select  <include refid="baseColumn"/>  from <include refid="baseFrom"/> where mw.id = #{id}
+	</select>
+	<sql id="baseColumn">
+		mw.id,mw.amount,mw.accountName,mw.accountNumber,mw.charge,mw.remark,mw.state,mw.applyTime,mw.audiTime,mw.bankForkName,mw.bankName
+		,ap.id ap_id,ap.username ap_username,au.id au_id,au.username au_username
+	</sql>
+
+	<sql id="baseFrom">
+		moneyWithdraw mw
+		LEFT JOIN logininfo ap ON (mw.applier_id = ap.id)
+		LEFT JOIN logininfo au ON (mw.auditor_id = au.id)
+	</sql>
+	<sql id="conditionSql">
+		<where>
+			<if test="state>-1">
+				AND mw.state = #{state}
+			</if>
+			<if test="beginDate!=null">
+				AND mw.applyTime &gt;= #{beginDate}
+			</if>
+			<if test="endDate!=null">
+				AND mw.applyTime &lt;= #{endDate}
+			</if>
+		</where>
+	</sql>
+	<select id="queryPageCount" resultType="long">
+		select count(0) from moneyWithdraw mw
+		<include refid="conditionSql"/>
+	</select>
+	<select id="queryPageData" resultMap="BaseResultMap">
+		select  <include refid="baseColumn"/>  from <include refid="baseFrom"/>
+		<include refid="conditionSql"/>
+		limit #{start},#{pageSize}
+	</select>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.BidMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.Bid" >
+    <id column="id" property="id"  />
+	<result column="availableAmount" property="availableAmount"  />
+	<result column="actualRate" property="actualRate"  />
+	<result column="bidRequest_id" property="bidRequestId"  />
+	<result column="bidRequestState" property="bidRequestState"  />
+	<result column="bidRequestTitle" property="bidRequestTitle"  />
+	<result column="bidTime" property="bidTime"  />
+      <!--关联logininfo对象-->
+      <association property="bidUser" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="bu_">
+          <id column="id" property="id" />
+          <result column="username" property="username"/>
+      </association>
+
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.Bid" useGeneratedKeys="true" keyProperty="id" >
+    insert into bid 
+    (availableAmount,actualRate,bidRequest_id,bidRequestState,bidUser_id,bidRequestTitle,bidTime)
+    values 
+    (#{availableAmount},#{actualRate},#{bidRequestId},#{bidRequestState},#{bidUser.id},#{bidRequestTitle},#{bidTime})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.business.domain.Bid" >
+    update bid
+    set
+	    availableAmount=#{availableAmount},
+	    actualRate=#{actualRate},
+	    bidRequest_id=#{bidRequestId},
+	    bidRequestState=#{bidRequestState},
+	    bidUser_id=#{bidUser.id},
+	    bidRequestTitle=#{bidRequestTitle},
+	    bidTime=#{bidTime}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select <include refid="base_column"/> from <include refid="base_from"/> where b.id = #{id}
+  </select>
+    <sql id="base_column">
+        b.id,b.availableAmount,b.actualRate,b.bidRequest_id,b.bidRequestState,b.bidRequestTitle,b.bidTime,
+        bu.id bu_id,bu.username bu_username
+    </sql>
+      <sql id="base_from">
+          bid b LEFT JOIN logininfo bu on b.bidUser_id = bu.id
+      </sql>
+
+  <sql id="conditionSql">
+  	<where>
+  	</where>
+  </sql>
+  <select id="queryPageCount" resultType="long">
+  	select count(0) from bid b
+  	<include refid="conditionSql"/>
+  </select>
+  <select id="queryPageData" resultMap="BaseResultMap">
+  	select <include refid="base_column"/> from <include refid="base_from"/>
+  	<include refid="conditionSql"/>
+  	limit #{start},#{pageSize}
+  </select>
+    <select id="selectByBidRequestId" resultMap="BaseResultMap">
+        select <include refid="base_column"/> from <include refid="base_from"/> where b.bidRequest_id = #{id}
+    </select>
+
+    <!--统一修改满标审核状态-->
+    <update id="updateState">
+        UPDATE bid SET bidRequestState=#{bidRequestState} where bidRequest_id = #{bidRequestId}
+    </update>
+
+</mapper>

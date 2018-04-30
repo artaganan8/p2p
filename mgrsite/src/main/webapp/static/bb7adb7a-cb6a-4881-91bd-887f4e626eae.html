@@ -1,0 +1,490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>蓝源Eloan-P2P平台(系统管理平台)</title>
+<link rel="stylesheet" href="/js/bootstrap-3.3.2-dist/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="/css/core.css" type="text/css" />
+<script type="text/javascript" src="/js/jquery/jquery-2.1.3.js"></script>
+<script type="text/javascript" src="/js/bootstrap-3.3.2-dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="/js/jquery.bootstrap.min.js"></script><link rel="stylesheet" type="text/css" href="/js/plugins/flipcountdown/jquery.flipcountdown.css" />
+<script type="text/javascript" src="/js/plugins/flipcountdown/jquery.flipcountdown.js"></script>
+		
+		<style type="text/css">
+			.el-userhead{
+				width: 100px;
+				height: 100px;
+				display: block;
+				margin: 0px auto;
+				
+			}
+			.muted{
+				color: #999;
+			}
+			.text-info{
+				color: #09d;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			$(function(){
+				$("#retroclockbox").flipcountdown({
+					size:'xs',
+					beforeDateTime:"2017-09-09 17:21:53"
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+            <div class="navbar cm-navbar">
+                <img class="logo" alt="Brand" src="/images/logo.png">
+                <span class="pageTitle">&nbsp;</span>
+                <ul class="nav navbar-nav navbar-right cm-navbar-nav">
+                    <li>
+                        <p class="navbar-text text-info">2222</p>
+                    </li>
+                    <li><a href="">安全退出</a></li>
+                    <li><a href="">个人设置</a></li>
+                </ul>
+            </div>
+			<div class="row">
+				<div class="col-sm-3">
+<ul id="menu" class="list-group">
+	<li class="list-group-item">
+		<a href="#" data-toggle="collapse" data-target="#usermanage_detail"><span>用户管理</span></a>
+		<ul class="in" id="usermanage_detail">
+			<li class=""><a href="/real_auth_list.do">平台用户管理</a></li>
+			<li class=""><a href="/recharge_offline_list.do">员工管理</a></li>
+		</ul>
+	</li>
+    <li class="list-group-item">
+        <a href="#" data-toggle="collapse" data-target="#auditmanage_detail">
+            <span>体验标相关</span>
+        </a>
+        <ul class="in" id="auditmanage_detail">
+            <li class="expBidRequestPublish"><a href="/expBidRequestPublishPage.do">发布体验标</a></li>
+            <li class="expbidrequestlist"><a href="/expBidRequest_list.do">体验标管理</a></li>
+        </ul>
+    </li>
+	<li class="list-group-item">
+		<a href="#" data-toggle="collapse" data-target="#permissionmanage_detail"><span>安全管理</span></a>
+		<ul class="in" id="permissionmanage_detail">
+			<li class="systemDictionary"><a href="/systemDictionary_list.do"><span>系统数据字典目录</span></a></li>
+			<li class="systemDictionaryItem"><a href="/systemDictionaryItem_list.do"><span>系统数据字典明细</span></a></li>
+			<li><a href="/permission_list.do"><span>权限管理</span></a></li>
+			<li><a href="#"><span>角色管理</span></a></li>
+			<li><a href="#"><span>菜单管理</span></a></li>
+			<li class="ipLog"><a href="/ipLog.do"><span>登录历史</span></a></li>
+		</ul>
+	</li>
+	<li class="list-group-item">
+		<a href="#" data-toggle="collapse" data-target="#auditmanage_detail">
+			<span>审核项目</span>
+		</a>
+		<ul class="in" id="auditmanage_detail">
+			<li class="realAuth"><a href="/realAuth.do">实名认证审核</a></li>
+			<li class="vedioAuth"><a href="/vedioAuth.do">视频认证审核</a></li>
+			<li class="userFileAuth"><a href="/userFileAuth.do">认证材料审核</a></li>
+			<li class="bidrequest_publishaudit_list"><a href="/bidrequest_publishaudit_list.do">发标前审核</a></li>
+			<li class="bidrequest_audit1_list"><a href="/bidrequest_audit1_list.do">满标一审</a></li>
+			<li class="bidrequest_audit2_list"><a href="/bidrequest_audit2_list.do">满标二审</a></li>
+			<li class="rechargeOffline"><a href="/rechargeOffline.do">线下充值审核</a></li>
+			<li class="moneyWithdraw"><a href="/moneyWithdraw.do">提现审核</a></li>
+		</ul>
+	</li>
+	<li class="list-group-item">
+		<a href="#" data-toggle="collapse" data-target="#systemmanage_detail">
+			<span>平台管理</span>
+		</a>
+		<ul class="in" id="systemmanage_detail">
+			<li class="companyBank"><a href="/companyBank_list.do">平台账号管理</a></li>
+			<li><a href="/real_auth_list.do">系统账户流水</a></li>
+			<li><a href="/bid_request_list.do"> <span>系统设置</span></a></li>
+			<li><a href="/bid_request_list.do"> <span>企业资讯</span></a></li>
+			<li><span><a href="#">友情链接</a></span></li>
+			<li><span><a href="#">广告设置</a></span></li>
+		</ul>
+	</li>
+</ul>
+
+				</div>
+				<div class="col-sm-9">
+					<div class="row">
+						<div class="col-sm-3">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									借款人
+								</div>
+								<div class="panel-body">
+									<img class="el-userhead" src="/images/person_icon.png" />
+									<p class="text-center">
+										<a class="text-info" href="#">machao</a>
+									</p><br />
+									<div>
+									 	籍贯： XX - OO
+									 </div>
+									 <div>
+									 	认证信息：
+									 		<label class="label label-success">
+									 			<span class="glyphicon glyphicon-user"></span>
+									 			<span class="glyphicon glyphicon-eye-open"></span>
+									 		</label>
+									 </div>
+								</div>
+							</div>	
+						</div>
+						
+						<div class="col-sm-6">
+							<h3 class="text-info" style="margin-top: 0px;">
+								1111借款
+								<small>&emsp;<label class="label label-primary">信</label></small>
+							</h3>
+							<div>
+								<table width="100%" height="250px">
+									<tr>
+										<td class="muted" width="80px">借款金额</td>
+										<td class="text-info" width="120px" style="padding-left: 10px;">
+											1,000
+										</td>
+										<td class="muted" width="80px">年化利率</td>
+										<td class="text-info" style="padding-left: 10px;">
+											10%
+										</td>
+									</tr>
+									<tr>
+										<td class="muted ">借款期限</td>
+										<td class="text-info" style="padding-left: 10px;">
+											1月
+										</td>
+										<td class="muted">总可得利息</td>
+										<td class="text-info" style="padding-left: 10px;">
+											8.333
+										</td>
+									</tr>
+									<tr>
+										<td class="muted">还款方式</td>
+										<td class="text-info" style="padding-left: 10px;">
+											等额本息
+										</td>
+										<td class="muted">最小投标</td>
+										<td class="text-info" style="padding-left: 10px;">
+											100
+										</td>
+									</tr>
+									<tr>
+										<td class="muted">风控意见</td>
+										<td class="text-info" style="padding-left: 10px;" colspan="3">
+											呜呜呜呜呜呜
+										</td>
+									</tr>
+									<tr>
+										<td class="muted">剩余时间</td>
+										<td class="text-info" style="padding-left: 10px;" colspan="3">
+											<div id="retroclockbox"></div>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<table style="height:110px;width:230px;">
+								<tr>
+									<td  class="muted">投标总数</td><td class="text-info" style="padding-left: 10px;">
+										4
+									</td>
+								</tr>
+								<tr>
+									<td  class="muted">还需金额</td><td class="text-info" style="padding-left: 10px;">
+										0 元
+									</td>
+								</tr>
+								<tr>
+									<td  class="muted" colspan="2">投标进度</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+									<div style="margin-bottom: 10px;" class="progress">
+										<div style="width: 100" class="progress-bar progress-bar-info progress-bar-striped"></div>
+									</div>
+									</td>
+								</tr>
+							</table>
+							
+								<h4 class="text-primary">还款中</h4>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div style="font-size: 16px;">标的审核信息</div>
+						</div>
+						<div class="panel-body">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>审核类型</th>
+										<th>审核时间</th>
+										<th>审核人</th>
+										<th>备注</th>
+									</tr>
+								</thead>
+								<tbody>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <td>投标前审核</td>
+								        <td>2017-09-08 17:21:00</td>
+								        <td>admin</td>
+								        <td>呜呜呜呜呜呜</td>
+								    </tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							借款人信息
+						</div>
+						<div class="panel-body">
+							<table>
+								<tbody>
+									<tr>
+										<td class="muted text-right" width="140px;">真实姓名</td>
+										<td width="150px;" style="padding-left: 10px;" class="text-info">
+											2***
+										</td>
+										<td class="muted text-right" width="140px;">生日</td>
+										<td width="150px;" style="padding-left: 10px;" class="text-info">
+											1994-02-03
+										</td>
+										<td class="muted text-right" width="140px;">身份证号码</td>
+										<td width="150px;" style="padding-left: 10px;" class="text-info">
+											210707****0322****
+										</td>
+										<td class="muted text-right" width="140px;">身份证地址</td>
+										<td width="150px;" style="padding-left: 10px;" class="text-info">
+											**呜呜呜呜
+										</td>
+									</tr>
+									<tr>
+										<td class="muted text-right" width="140px;">注册时间</td>
+										<td width="150px;" style="padding-left: 10px;" class="text-info">
+											
+										</td>
+										<td class="muted text-right" width="140px;">借款额度</td>
+										<td width="150px;" style="padding-left: 10px;" class="text-info">
+											1,000
+										</td>
+										<td class="muted text-right" width="140px;">性别</td>
+										<td width="150px;" style="padding-left: 10px;" class="text-info">
+											男
+										</td>
+										<td class="muted text-right" width="140px;">住房条件</td>
+										<td width="150px;" style="padding-left: 10px;" class="text-info">
+											有自有房
+										</td>
+									</tr>
+									<tr>
+										<td class="muted text-right">文化程度</td>
+										<td style="padding-left: 10px;" class="text-info">
+											大专以下
+										</td>
+										<td class="muted text-right">每月收入</td>
+										<td style="padding-left: 10px;" class="text-info">
+											3000以下
+										</td>
+										<td class="muted text-right">婚姻情况</td>
+										<td style="padding-left: 10px;" class="text-info">
+											已婚
+										</td>
+										<td class="muted text-right">子女情况</td>
+										<td style="padding-left: 10px;" class="text-info">
+											有子女
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div style="font-size: 16px;">材料信息</div>
+						</div>
+						<div class="panel-body">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>材料类型</th>
+										<th>材料数量</th>
+									</tr>
+								</thead>
+								<tbody>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <th>房产证正面</th>
+								        <td>1</td>
+								    </tr>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <th>户口本</th>
+								        <td>1</td>
+								    </tr>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <th>结婚证</th>
+								        <td>1</td>
+								    </tr>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <th>房产证正面</th>
+								        <td>1</td>
+								    </tr>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <th>房产证正面</th>
+								        <td>1</td>
+								    </tr>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <th>房产证正面</th>
+								        <td>1</td>
+								    </tr>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <th>房产证正面</th>
+								        <td>1</td>
+								    </tr>
+							    	<tr style="cursor: pointer;" lid="2101" st="1" class="more">
+								        <th>银行流水证明</th>
+								        <td>1</td>
+								    </tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div style="font-size: 16px;">还款情况</div>
+						</div>
+						<div class="panel-body">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>还款状态</th>
+										<th>最近一周</th>
+										<th>最近1月</th>
+										<th>最近6月</th>
+										<th>6个月前</th>
+										<th>总计[?]</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>提前还款</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<td>准时还款</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<td>逾期已还</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<td>逾期未还</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div style="font-size: 16px;">投标记录</div>
+						</div>
+						<div class="panel-body">
+								<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>投标人</th>
+										<th>年利率 </th>
+										<th>有效金额(?)</th>
+										<th>投标时间</th>
+										<th>类型</th>
+									</tr>
+								</thead>
+								<tbody>
+											<tr>
+												<td>zhangsan</td>
+												<td>
+													10%
+												</td>
+												<td style="padding-right:60px;" class="text-info">
+													400
+												</td>
+												<td>
+													2017-09-10 19:30:22
+												</td>
+												<td>手动投标</td>
+											</tr>
+											<tr>
+												<td>zhangsan1</td>
+												<td>
+													10%
+												</td>
+												<td style="padding-right:60px;" class="text-info">
+													200
+												</td>
+												<td>
+													2017-09-10 19:34:45
+												</td>
+												<td>手动投标</td>
+											</tr>
+											<tr>
+												<td>zhangsan1</td>
+												<td>
+													10%
+												</td>
+												<td style="padding-right:60px;" class="text-info">
+													200
+												</td>
+												<td>
+													2017-09-10 19:35:26
+												</td>
+												<td>手动投标</td>
+											</tr>
+											<tr>
+												<td>zhangsan1</td>
+												<td>
+													10%
+												</td>
+												<td style="padding-right:60px;" class="text-info">
+													200
+												</td>
+												<td>
+													2017-09-10 19:37:28
+												</td>
+												<td>手动投标</td>
+											</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

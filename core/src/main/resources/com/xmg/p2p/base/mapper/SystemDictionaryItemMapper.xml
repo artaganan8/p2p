@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.base.mapper.SystemDictionaryItemMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.base.domain.SystemDictionaryItem" >
+    <id column="id" property="id"  />
+	<result column="parentId" property="parentId"  />
+	<result column="sequence" property="sequence"  />
+	<result column="title" property="title"  />
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.base.domain.SystemDictionaryItem" useGeneratedKeys="true" keyProperty="id" >
+    insert into systemDictionaryItem 
+    (parentId,sequence,title)
+    values 
+    (#{parentId},#{sequence},#{title})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.base.domain.SystemDictionaryItem" >
+    update systemDictionaryItem
+    set
+	    parentId=#{parentId},
+	    sequence=#{sequence},
+	    title=#{title}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select * from systemDictionaryItem where id = #{id}
+  </select>
+  <sql id="conditionSql">
+  	<where>
+        <if test="parentId!=null">
+            AND parentId = #{parentId}
+        </if>
+  	</where>
+  </sql>
+  <select id="queryPageCount" resultType="long">
+  	select count(0) from systemDictionaryItem
+  	<include refid="conditionSql"/>
+  </select>
+  <select id="queryPageData" resultMap="BaseResultMap">
+  	select * from systemDictionaryItem
+  	<include refid="conditionSql"/>
+  	limit #{start},#{pageSize}
+  </select>
+    <select id="listBySn" resultMap="BaseResultMap">
+        SELECT * FROM systemdictionaryitem where parentId in(
+        SELECT id FROM systemdictionary WHERE sn = #{sn}
+        )
+    </select>
+</mapper>

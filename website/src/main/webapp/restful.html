@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/js/jquery/jquery-2.1.3.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-3.3.2-dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/plugins/jquery-validation/jquery.validate.js"></script>
+    <script type="text/javascript" src="/js/plugins/jquery.form.js"></script>
+    <script type="text/javascript" src="/js/jquery.bootstrap.min.js"></script>
+    <script type="text/javascript" >
+        $(function(){
+            $("#click").click(function (){
+                $.ajax({
+                    url:'emps/2.do',
+                    dataType:'json',
+                    type:"DELETE"
+                })
+            })
+        })
+    </script>
+
+</head>
+<body>
+    <a href="javascript:;" id="click" >使用ajax方式提交删除员工</a>
+    <form action="emps/2.do" method="POST" >
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="使用表单的方式提交删除员工">
+    </form>
+</body>
+</html>

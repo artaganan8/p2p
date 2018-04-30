@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.PaymentScheduleMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.PaymentSchedule" >
+    <id column="id" property="id"  />
+	<result column="state" property="state"  />
+	<result column="bidRequest_id" property="bidRequestId"  />
+	<result column="returnType" property="returnType"  />
+	<result column="deadLine" property="deadLine"  />
+	<result column="monthIndex" property="monthIndex"  />
+	<result column="principal" property="principal"  />
+	<result column="bidRequestType" property="bidRequestType"  />
+	<result column="interest" property="interest"  />
+	<result column="totalAmount" property="totalAmount"  />
+	<result column="payDate" property="payDate"  />
+	<result column="bidRequestTitle" property="bidRequestTitle"  />
+	  <association property="borrowUser" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="l_">
+		  <id column="id" property="id"/>
+		  <result column="username" property="username"/>
+	  </association>
+	  <collection property="details" ofType="com.xmg.p2p.business.domain.PaymentScheduleDetail" column="id"
+				  select="com.xmg.p2p.business.mapper.PaymentScheduleDetailMapper.selectByScheduleId"/>
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.PaymentSchedule" useGeneratedKeys="true" keyProperty="id" >
+    insert into paymentSchedule 
+    (state,bidRequest_id,returnType,deadLine,borrowUser_id,monthIndex,principal,bidRequestType,interest,totalAmount,payDate,bidRequestTitle)
+    values 
+    (#{state},#{bidRequestId},#{returnType},#{deadLine},#{borrowUser.id},#{monthIndex},#{principal},#{bidRequestType},#{interest},#{totalAmount},#{payDate},#{bidRequestTitle})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.business.domain.PaymentSchedule" >
+    update paymentSchedule
+    set
+	    state=#{state},
+	    bidRequest_id=#{bidRequestId},
+	    returnType=#{returnType},
+	    deadLine=#{deadLine},
+	    borrowUser_id=#{borrowUser.id},
+	    monthIndex=#{monthIndex},
+	    principal=#{principal},
+	    bidRequestType=#{bidRequestType},
+	    interest=#{interest},
+	    totalAmount=#{totalAmount},
+	    payDate=#{payDate},
+	    bidRequestTitle=#{bidRequestTitle}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select <include refid="base_column"/> from <include refid="base_from"/> where ps.id = #{id}
+  </select>
+	<sql id="base_column">
+		ps.id,ps.state,ps.bidRequest_id,ps.returnType,ps.deadLine,ps.borrowUser_id,ps.monthIndex,ps.principal
+		,ps.bidRequestType,ps.interest,ps.totalAmount,ps.payDate,ps.bidRequestTitle,
+		l.id l_id, l.username l_username
+	</sql>
+	<sql id="base_from">
+		paymentSchedule ps
+		LEFT JOIN logininfo l on (ps.borrowUser_id = l.id)
+	</sql>
+  <sql id="conditionSql">
+  	<where>
+		<if test="state>-1">
+			AND ps.state = #{state}
+		</if>
+		<if test="beginDate!=null">
+			AND ps.deadLine &gt;= #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND ps.deadLine &lt;= #{endDate}
+		</if>
+  	</where>
+  </sql>
+  <select id="queryPageCount" resultType="long">
+  	select count(0) from paymentSchedule ps
+  	<include refid="conditionSql"/>
+  </select>
+  <select id="queryPageData" resultMap="BaseResultMap">
+  	select <include refid="base_column"/> from <include refid="base_from"/>
+  	<include refid="conditionSql"/>
+  	limit #{start},#{pageSize}
+  </select>
+	<select id="queryBiBidRequestId" resultMap="BaseResultMap">
+		select <include refid="base_column"/> from <include refid="base_from"/> WHERE ps.bidRequest_id = #{bidRequestId}
+	</select>
+
+</mapper>

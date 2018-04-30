@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.ExpAccountGrantRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.ExpAccountGrantRecord" >
+    <id column="id" property="id"  />
+	<result column="amount" property="amount"  />
+	<result column="grantDate" property="grantDate"  />
+	<result column="grantType" property="grantType"  />
+	<result column="state" property="state"  />
+	<result column="grantUserId" property="grantUserId"  />
+	<result column="returnDate" property="returnDate"  />
+	<result column="note" property="note"  />
+  </resultMap>
+  <insert id="insert" parameterType="com.xmg.p2p.business.domain.ExpAccountGrantRecord" useGeneratedKeys="true" keyProperty="id" >
+    insert into expAccountGrantRecord 
+    (amount,grantDate,grantType,state,grantUserId,returnDate,note)
+    values 
+    (#{amount},#{grantDate},#{grantType},#{state},#{grantUserId},#{returnDate},#{note})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.business.domain.ExpAccountGrantRecord" >
+    update expAccountGrantRecord
+    set
+	    amount=#{amount},
+	    grantDate=#{grantDate},
+	    grantType=#{grantType},
+	    state=#{state},
+	    grantUserId=#{grantUserId},
+	    returnDate=#{returnDate},
+	    note=#{note}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select * from expAccountGrantRecord where id = #{id}
+  </select>
+  <sql id="conditionSql">
+  	<where>
+  	</where>
+  </sql>
+  <select id="queryPageCount" resultType="long">
+  	select count(0) from expAccountGrantRecord
+  	<include refid="conditionSql"/>
+  </select>
+  <select id="queryPageData" resultMap="BaseResultMap">
+  	select * from expAccountGrantRecord
+  	<include refid="conditionSql"/>
+  	limit #{start},#{pageSize}
+  </select>
+</mapper>
